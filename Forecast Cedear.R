@@ -61,7 +61,7 @@ rownames(AAPL) = 1:nrow(AAPL)
 
 
 
-# Se crean las variaciones de los ˙ltimos 5 dias
+# Se crean las variaciones de los √∫ltimos 5 dias
 
 AAPLdis = round( ( AAPL$Close[length(AAPL$Close)] - AAPL$Close[length(AAPL$Close) - 5] ) / AAPL$Close[length(AAPL$Close) - 5] ,4)*100 
 
@@ -117,15 +117,15 @@ AAPL_P$fecha_dup = AAPL_P$fecha
 
 # separamos
 
-AAPL_P = AAPL_P %>% separate(fecha, c('aÒo', 'mes', 'dia'))
+AAPL_P = AAPL_P %>% separate(fecha, c('a√±o', 'mes', 'dia'))
 
-# para que las redes neuronales funcionen las variables tienen que ser numÈricas
+# para que las redes neuronales funcionen las variables tienen que ser num√©ricas
 
-AAPL_P$aÒo = as.numeric(AAPL_P$aÒo)
+AAPL_P$a√±o = as.numeric(AAPL_P$a√±o)
 AAPL_P$mes = as.numeric(AAPL_P$mes)
 AAPL_P$dia = as.numeric(AAPL_P$dia)
 
-# redes neuronales, hay que escalar aÒo, mes y dÌa
+# redes neuronales, hay que escalar a√±o, mes y d√≠a
 
 set.seed(1994) 
 
@@ -144,7 +144,7 @@ set.seed(1994)  # para que no cambie el escalado y R tome la misma aleatoriedad
 
 train = createDataPartition(na.omit(subset(AAPL_P, AAPL_P$fecha_dup < today()))$precio,
                             p = 0.7, list = F)
-# no quiero que sea una lista, que sea un vector, que filtre por precio y la proporciÛn
+# no quiero que sea una lista, que sea un vector, que filtre por precio y la proporci√≥n
 # que sea del 70% y que no tenga en cuenta los na
 
 # el test va a ser para testear el modelo, le sacamos las filas del train,
@@ -166,15 +166,15 @@ test.sc$fecha = as.Date(test.sc$fecha)
 
 # Primero pasar a numericos
 
-AAPL_P.sc$aÒo = as.numeric(AAPL_P.sc$aÒo)
+AAPL_P.sc$a√±o = as.numeric(AAPL_P.sc$a√±o)
 AAPL_P.sc$mes = as.numeric(AAPL_P.sc$mes)
 AAPL_P.sc$dia = as.numeric(AAPL_P.sc$dia)
 
-# neuralnet requiere necesariamente que los datos estÈn escalados y se requieren variables
+# neuralnet requiere necesariamente que los datos est√©n escalados y se requieren variables
 # muy explicativas para la variable dependiente
 
 
-mod = neuralnet(formula = precio ~ aÒo + mes + dia, data = AAPL_P.sc[train,],
+mod = neuralnet(formula = precio ~ a√±o + mes + dia, data = AAPL_P.sc[train,],
                 hidden = 2, threshold = 0.01, stepmax = 1e+08, rep = 1,
                 linear.output = TRUE) # usamos solo las filas del train
 
@@ -194,6 +194,6 @@ error_por = error_abs / datos[datos$fecha == max(na.omit(datos)$fecha),]$precio
 ggplot() + geom_line(data = datos, aes(x = fecha, y = precio), color = "blue") +
   geom_line(data = datos, aes(x = fecha, y = pred$net.result), color = "red") 
 
-link = "https://www.youtube.com/watch?v=RBr3yRdE_LA"
+
 
 
